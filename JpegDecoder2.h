@@ -15,8 +15,7 @@ https://github.com/Bodmer/JPEGDecoder
 #define JPEGDECODER2_H
 
 #include "Arduino.h"
-#include <SD.h>    // Default
-  
+#include <SD.h>
 #include "picojpeg.h"
 
 enum {
