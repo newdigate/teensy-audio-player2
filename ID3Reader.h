@@ -49,7 +49,7 @@ private:
 bool ID3Reader::open(const char *filename) {
 
     if (!SD.exists(filename)) {
-        //printf("unable to find %s \n", filename);
+        Serial.printf("unable to find %s \n", filename);
         return false;
     }
 
