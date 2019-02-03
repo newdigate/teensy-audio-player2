@@ -44,7 +44,6 @@
 #include <Adafruit_GFX.h>    // Core graphics library
 #include <ST7735_t3.h> 
 //#include <Adafruit_ST7735.h> // Hardware-specific library
-#include "TFTProgressBar.h"
 
 #define ENC2A 29 
 #define ENC2B 30 
@@ -59,8 +58,6 @@ Encoder myEnc(26, 27);
 
 //Adafruit_ST7735 tft = Adafruit_ST7735(cs, dc, mosi, sclk, rst);
 ST7735_t3 tft = ST7735_t3(cs, dc, mosi, sclk, rst);
-
-TFTProgressBar progressBar = TFTProgressBar(tft);
 
 Bounce bouncer1 = Bounce(BUTTON1, 50); 
 Bounce bouncer2 = Bounce(BUTTON2, 50); 
