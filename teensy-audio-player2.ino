@@ -19,7 +19,6 @@
 // MP3/AAC library code by Frank Boesing.
 
 #include <SD.h>
-
 #include <SPI.h>
 #include <EEPROM.h> // store last track
 #include "BALibrary.h"
@@ -27,7 +26,6 @@
 #include <play_sd_aac.h> // AAC decoder
 #include "ID3Reader.h"
 #include "picojpeg.h"
-//#define SWAP_BYTES
 #include "JpegDecoder2.h"
 #define minimum(a,b)     (((a) < (b)) ? (a) : (b))
 
@@ -50,7 +48,7 @@
 Encoder knob(ENC2A, ENC2B);
 Encoder myEnc(26, 27);
 
-#define sclk 14 //27  // SCLK can also use pin 13,14,27zz
+#define sclk 14 //27  // SCLK can also use pin 13,14,
 #define mosi 7  // MOSI can also use pin 7,11,28
 #define cs   6  // CS & DC can use pins 2, 6, 9, 10, 15, 20, 21, 22, 23
 #define dc   12   //  but certain pairs must NOT be used: 2+10, 6+9, 20+23, 21+22
@@ -166,6 +164,12 @@ void setup() {
   if (!SD.begin(BUILTIN_SDCARD)) {
    
   }
+  //currentDirectory = SD.open("/", FILE_READ);
+  
+  Serial.println("started sdcard...\n");
+  //Starting to index the SD card for MP3/AAC.
+   
+
 
 
 
@@ -239,13 +243,33 @@ void playFileMP3(const char *filename)
 
         } else if (memcmp(tag,"TALB",4) == 0) {
           sprintf(albumname, text);
+          //tft.setCursor(0,64);
+
         }
         else if (memcmp(tag,"TPE2",4) == 0) {
           sprintf(composername, text);
+          //tft.setCursor(0,64);
+          //tft.setTextSize(1);
+          //tft.setTextColor(ST7735_GREEN);   
+          //tft.print(text);
+          //tft.print("\n");
         }
     };
     
-  id3reader.onID3JpegImageTag = [&] (File &jpegFile, char *text, uint64_t alength) {    
+  id3reader.onID3JpegImageTag = [&] (File &jpegFile, char *text, uint64_t alength) {
+    //Serial.printf("<><>img : %s\n", text);
+    //File currentImage = SD.open("/current.jpg", FILE_WRITE);
+    //uint64_t totalBytes = 0;
+    //int n = 0;
+    //char buff[255];
+    //while (((n = jpegFile.read(buff, sizeof(buff))) > 0)  && (totalBytes < alength)) {
+    // totalBytes += n;
+    //  currentImage.write(buff, n);
+      //Serial.printf("<><>img :rrrrrrrrr");
+    //}   
+    //currentImage.close();
+    //Serial.printf("<><>img :complete");
+    
     drawJpeg(jpegFile, tft, 0,0);
   };
 
@@ -444,7 +468,14 @@ void controls() {
 
 void loop() {
   controls();
+  
 
+
+  //Serial.println();
+  //Serial.println(tracknum);
+  //Serial.println(track);
+  //Serial.println(trackext[track]);
+  //Serial.println(tracklist[track]);
   String path = "/" + currentPath + "/" + tracklist[track];
   //Serial.println(path.c_str());
   if(trackext[track] == 1){
@@ -498,6 +529,13 @@ void randomtrack(){
 
   tracklist[track].toCharArray(playthis, sizeof(tracklist[track])); //since we have to convert String to Char will do this    
 }
+
+
+
+
+
+
+
 
 void drawJpeg(const File &jpegFile, ST7735_t3 &tft, int xpos, int ypos) {
 
